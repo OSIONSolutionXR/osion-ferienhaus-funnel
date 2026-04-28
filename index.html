@@ -2,278 +2,276 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OSION Ferienhaus Diagnose</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         :root {
-            --os-bg: #0a0a0f;
-            --os-surface: #12121a;
-            --os-surface-hover: #1a1a25;
-            --os-border: #2a2a3a;
-            --os-border-glow: #3a3a4a;
-            --os-text: #ffffff;
-            --os-text-secondary: #a0a0b0;
-            --os-text-muted: #6a6a7a;
-            --os-gradient-start: #dc2626;
-            --os-gradient-mid: #a855f7;
-            --os-gradient-end: #7c3aed;
-            --os-accent: #f59e0b;
-            --os-success: #10b981;
+            /* Exaktes Schwarz vom Screenshot */
+            --bg-primary: #0a0a0c;
+            --bg-secondary: #121214;
+            --bg-tertiary: #1a1a1d;
+            --bg-card: #151518;
+            
+            /* OSION Brand Colors */
+            --accent-rose: #f43f5e;
+            --accent-violet: #8b5cf6;
+            --accent-purple: #a855f7;
+            --accent-magenta: #d946ef;
+            
+            /* Text */
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            
+            /* Border */
+            --border-subtle: #27272a;
+            --border-glow: rgba(139, 92, 246, 0.3);
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, var(--accent-rose) 0%, var(--accent-violet) 50%, var(--accent-magenta) 100%);
+            --gradient-subtle: linear-gradient(180deg, rgba(139,92,246,0.08) 0%, transparent 100%);
         }
         
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--os-bg);
-            min-height: 100vh;
-            color: var(--os-text);
-            line-height: 1.6;
-            overflow-x: hidden;
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
         
-        .os-container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 40px 24px;
-            min-height: 100vh;
+        .funnel-container {
+            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
         
-        /* Intro Section */
-        .os-intro {
-            text-align: center;
-            margin-bottom: 48px;
-            animation: fadeInUp 0.8s ease-out;
+        /* Background Pattern */
+        .funnel-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(139,92,246,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(244,63,94,0.05) 0%, transparent 50%),
+                var(--bg-primary);
+            z-index: 0;
         }
         
-        .os-logo {
+        .funnel-content {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Header */
+        .funnel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .funnel-logo {
             font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--os-text-secondary);
-            margin-bottom: 40px;
-            opacity: 0.7;
-        }
-        
-        .os-intro h1 {
-            font-size: clamp(1.75rem, 5vw, 2.5rem);
             font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #a0a0b0 100%);
+            letter-spacing: 2px;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .os-intro p {
-            font-size: 1.125rem;
-            color: var(--os-text-secondary);
-            max-width: 560px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-        
-        /* Progress */
-        .os-progress {
-            margin-bottom: 40px;
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out 0.3s forwards;
-        }
-        
-        .os-progress-header {
+        .funnel-progress {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            gap: 12px;
         }
         
-        .os-progress-label {
-            font-size: 0.875rem;
-            color: var(--os-text-muted);
-            font-weight: 500;
-        }
-        
-        .os-progress-step {
-            font-size: 0.875rem;
-            color: var(--os-text);
+        .progress-text {
+            font-size: 12px;
             font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
         }
         
-        .os-progress-bar {
+        .progress-text span {
+            color: var(--text-primary);
+        }
+        
+        .progress-bar {
+            width: 80px;
             height: 4px;
-            background: var(--os-surface);
+            background: var(--bg-tertiary);
             border-radius: 2px;
             overflow: hidden;
-            position: relative;
         }
         
-        .os-progress-fill {
+        .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--os-gradient-start), var(--os-gradient-mid), var(--os-gradient-end));
+            background: var(--gradient-primary);
             border-radius: 2px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(139,92,246,0.5);
         }
         
-        .os-progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        /* Question Card */
-        .os-question-card {
-            background: linear-gradient(145deg, var(--os-surface), var(--os-surface-hover));
-            border: 1px solid var(--os-border);
-            border-radius: 24px;
-            padding: 40px;
+        /* Screen Container */
+        .screen-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideInUp 0.6s ease-out forwards;
-            box-shadow: 
-                0 1px 2px rgba(0,0,0,0.3),
-                0 4px 8px rgba(0,0,0,0.2),
-                inset 0 1px 0 rgba(255,255,255,0.03);
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
         
-        .os-question-badge {
+        .screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+        
+        .screen.prev {
+            transform: translateX(-50px);
+        }
+        
+        /* Question Screen */
+        .question-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.75rem;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--os-gradient-mid);
-            margin-bottom: 24px;
+            letter-spacing: 1.5px;
+            color: var(--accent-violet);
+            margin-bottom: 16px;
         }
         
-        .os-question-badge::before {
+        .question-badge::before {
             content: '';
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(135deg, var(--os-gradient-start), var(--os-gradient-mid));
+            width: 6px;
+            height: 6px;
+            background: var(--accent-violet);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--accent-violet);
         }
         
-        .os-question-title {
-            font-size: clamp(1.375rem, 3.5vw, 1.75rem);
+        .question-title {
+            font-size: clamp(1.25rem, 4vw, 1.625rem);
             font-weight: 600;
-            line-height: 1.35;
-            margin-bottom: 32px;
-            color: var(--os-text);
+            line-height: 1.3;
+            margin-bottom: 28px;
+            color: var(--text-primary);
         }
         
-        /* Options */
-        .os-options {
+        /* Options Grid */
+        .options-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            flex: 1;
+            gap: 10px;
         }
         
-        .os-option {
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .os-option input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .os-option-label {
+        .option-btn {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 20px 24px;
-            background: var(--os-surface-hover);
-            border: 2px solid transparent;
-            border-radius: 16px;
+            gap: 14px;
+            padding: 16px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 1rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            color: var(--text-primary);
+            font-size: 15px;
             font-weight: 500;
-            color: var(--os-text);
+            line-height: 1.4;
         }
         
-        .os-option-radio {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--os-border);
+        .option-btn:hover {
+            border-color: var(--border-glow);
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        
+        .option-btn.selected {
+            border-color: var(--accent-violet);
+            background: linear-gradient(145deg, rgba(139,92,246,0.15), rgba(244,63,94,0.05));
+            box-shadow: 0 0 20px rgba(139,92,246,0.2);
+        }
+        
+        .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border-subtle);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
         
-        .os-option-radio::after {
+        .option-btn.selected .option-radio {
+            border-color: var(--accent-violet);
+            background: var(--accent-violet);
+        }
+        
+        .option-btn.selected .option-radio::after {
             content: '';
-            width: 10px;
-            height: 10px;
-            background: linear-gradient(135deg, var(--os-gradient-start), var(--os-gradient-mid));
+            width: 8px;
+            height: 8px;
+            background: white;
             border-radius: 50%;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .os-option:hover .os-option-label {
-            border-color: var(--os-border-glow);
-            background: var(--os-surface);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-        }
-        
-        .os-option input:checked + .os-option-label {
-            border-color: var(--os-gradient-mid);
-            background: linear-gradient(145deg, rgba(124,58,237,0.1), rgba(220,38,38,0.05));
-        }
-        
-        .os-option input:checked + .os-option-label .os-option-radio {
-            border-color: var(--os-gradient-mid);
-        }
-        
-        .os-option input:checked + .os-option-label .os-option-radio::after {
-            opacity: 1;
-            transform: scale(1);
         }
         
         /* Navigation */
-        .os-nav {
+        .nav-bar {
             display: flex;
-            gap: 16px;
-            margin-top: 32px;
+            gap: 12px;
+            padding-top: 20px;
         }
         
-        .os-btn {
-            padding: 18px 32px;
+        .nav-btn {
+            flex: 1;
+            padding: 16px 24px;
             border-radius: 14px;
-            font-size: 1rem;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
             display: flex;
             align-items: center;
@@ -281,593 +279,586 @@
             gap: 8px;
         }
         
-        .os-btn-primary {
-            background: linear-gradient(135deg, var(--os-gradient-start), var(--os-gradient-end));
+        .nav-btn-primary {
+            background: var(--gradient-primary);
             color: white;
-            flex: 1;
             position: relative;
             overflow: hidden;
         }
         
-        .os-btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .os-btn-primary:hover::before {
-            left: 100%;
-        }
-        
-        .os-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(220, 38, 38, 0.4);
-        }
-        
-        .os-btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .os-btn-secondary {
-            background: transparent;
-            color: var(--os-text-secondary);
-            border: 2px solid var(--os-border);
-        }
-        
-        .os-btn-secondary:hover {
-            border-color: var(--os-border-glow);
-            color: var(--os-text);
-        }
-        
-        .os-btn-secondary:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-        
-        /* Results */
-        .os-results {
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        
-        .os-results-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .os-results-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            background: linear-gradient(135deg, var(--os-gradient-start), var(--os-gradient-end));
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            box-shadow: 0 16px 40px rgba(220, 38, 38, 0.3);
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .os-results h2 {
-            font-size: clamp(1.75rem, 4vw, 2.25rem);
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #ffffff, #a0a0b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .os-results-subtitle {
-            color: var(--os-text-secondary);
-            font-size: 1.125rem;
-        }
-        
-        /* Diagnosis Cards */
-        .os-diagnosis-card {
-            background: linear-gradient(145deg, var(--os-surface), var(--os-surface-hover));
-            border: 1px solid var(--os-border);
-            border-radius: 24px;
-            padding: 32px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .os-diagnosis-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--os-gradient-mid);
-            margin-bottom: 12px;
-        }
-        
-        .os-diagnosis-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--os-text);
-        }
-        
-        .os-diagnosis-text {
-            color: var(--os-text-secondary);
-            line-height: 1.8;
-            font-size: 1.0625rem;
-        }
-        
-        .os-consequence {
-            background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(124,58,237,0.1));
-            border-left: 4px solid var(--os-gradient-start);
-            padding: 24px;
-            border-radius: 0 16px 16px 0;
-            margin-bottom: 32px;
-        }
-        
-        .os-consequence p {
-            color: var(--os-text);
-            line-height: 1.7;
-            font-style: italic;
-        }
-        
-        /* Offer Section */
-        .os-offer {
-            background: linear-gradient(145deg, var(--os-surface), var(--os-surface-hover));
-            border: 1px solid var(--os-border);
-            border-radius: 24px;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-        }
-        
-        .os-offer::before {
+        .nav-btn-primary::before {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 24px;
-            padding: 1px;
-            background: linear-gradient(135deg, var(--os-gradient-start), var(--os-gradient-end));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.3;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
         }
         
-        .os-offer-title {
-            font-size: 1.375rem;
-            font-weight: 700;
-            margin-bottom: 16px;
+        .nav-btn-primary:hover::before {
+            transform: translateX(100%);
         }
         
-        .os-offer-text {
-            color: var(--os-text-secondary);
-            line-height: 1.8;
+        .nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(139,92,246,0.4);
+        }
+        
+        .nav-btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .nav-btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .nav-btn-secondary:hover {
+            border-color: var(--border-glow);
+            color: var(--text-primary);
+        }
+        
+        /* Results Screen */
+        .results-header {
+            text-align: center;
             margin-bottom: 24px;
-            font-size: 1.0625rem;
         }
         
-        .os-roi-box {
-            background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(245,158,11,0.1));
-            border: 1px solid rgba(16,185,129,0.3);
-            border-radius: 16px;
-            padding: 24px;
-            margin: 28px 0;
-        }
-        
-        .os-roi-box p {
-            color: var(--os-success);
-            font-weight: 600;
-            font-size: 1.125rem;
+        .results-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            background: var(--gradient-primary);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-        }
-        
-        .os-cta-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 32px;
-        }
-        
-        @media (min-width: 480px) {
-            .os-cta-group {
-                flex-direction: row;
-                justify-content: center;
-            }
-            
-            .os-cta-group .os-btn {
-                flex: 0 0 auto;
-                min-width: 220px;
-            }
-        }
-        
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeInUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes slideInUp {
-            from { 
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            font-size: 28px;
+            box-shadow: 0 16px 40px rgba(139,92,246,0.3);
+            animation: float 3s ease-in-out infinite;
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-6px); }
         }
         
-        /* Utility */
-        .os-hidden {
-            display: none !important;
+        .results-title {
+            font-size: clamp(1.375rem, 4vw, 1.75rem);
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .os-fade-out {
-            animation: fadeOut 0.3s ease-out forwards;
+        .results-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
         }
         
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+        /* Diagnosis Card */
+        .diagnosis-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .diagnosis-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-violet);
+            margin-bottom: 8px;
+        }
+        
+        .diagnosis-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .diagnosis-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .consequence-box {
+            background: linear-gradient(135deg, rgba(244,63,94,0.1), rgba(139,92,246,0.08));
+            border-left: 3px solid var(--accent-rose);
+            padding: 16px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 16px;
+        }
+        
+        .consequence-box p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        /* CTA Box */
+        .cta-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: var(--gradient-primary);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.4;
+        }
+        
+        .cta-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .cta-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .roi-badge {
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(245,158,11,0.1));
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .roi-badge p {
+            font-size: 14px;
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .cta-btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        /* Scrollable area for results */
+        .results-scroll {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
+            margin-right: -4px;
+        }
+        
+        .results-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .results-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .results-scroll::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 2px;
         }
         
         /* Mobile optimizations */
         @media (max-width: 480px) {
-            .os-container {
-                padding: 24px 16px;
+            .funnel-content {
+                padding: 16px;
             }
             
-            .os-question-card {
-                padding: 28px 20px;
+            .question-title {
+                font-size: 1.125rem;
             }
             
-            .os-option-label {
-                padding: 18px 20px;
+            .option-btn {
+                padding: 14px 16px;
+                font-size: 14px;
             }
             
-            .os-btn {
-                padding: 16px 24px;
+            .diagnosis-card {
+                padding: 20px;
             }
+            
+            .cta-box {
+                padding: 20px;
+            }
+        }
+        
+        /* Utility */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 <body>
-    <div class="os-container">
-        <!-- Intro -->
-        <div class="os-intro" id="os-intro">
-            <div class="os-logo">OSION</div>
-            <h1>Finde heraus, warum dein Ferienhaus nicht konstant genug gebucht wird.</h1>
-            <p>Beantworte wenige Fragen und erhalte eine erste Einschätzung, welche Buchungsbremsen bei deinem Ferienhaus wahrscheinlich wirken.</p>
-        </div>
-
-        <!-- Progress -->
-        <div class="os-progress" id="os-progress">
-            <div class="os-progress-header">
-                <span class="os-progress-label">Fortschritt</span>
-                <span class="os-progress-step"><span id="os-current-step">1</span> von 8</span>
-            </div>
-            <div class="os-progress-bar">
-                <div class="os-progress-fill" id="os-progress-fill" style="width: 12.5%"></div>
-            </div>
-        </div>
-
-        <!-- Question Container -->
-        <div id="os-question-container"></div>
-
-        <!-- Results -->
-        <div class="os-results os-hidden" id="os-results">
-            <div class="os-results-header">
-                <div class="os-results-icon">📊</div>
-                <h2>Deine Analyse-Ergebnisse</h2>
-                <p class="os-results-subtitle">Basierend auf deinen Antworten haben wir deine Situation bewertet</p>
-            </div>
-
-            <div class="os-diagnosis-card">
-                <div class="os-diagnosis-label">Erste Einschätzung</div>
-                <p class="os-diagnosis-text" style="margin-bottom: 28px;">Deine Antworten zeigen, dass dein Ferienhaus wahrscheinlich nicht an einem einzelnen Punkt scheitert, sondern an mehreren Buchungsbremsen gleichzeitig.</p>
-                
-                <div class="os-diagnosis-label" style="margin-top: 32px;">Hauptdiagnose</div>
-                <h3 class="os-diagnosis-title" id="os-diagnosis-title"></h3>
-                <p class="os-diagnosis-text" id="os-diagnosis-text"></p>
-            </div>
-
-            <div class="os-consequence">
-                <p>Ohne einen strukturierten Plan besteht das Risiko, dass weiterhin einzelne Änderungen ausprobiert werden, ohne dass die eigentliche Ursache sauber bearbeitet wird.</p>
-            </div>
-
-            <div class="os-offer">
-                <h3 class="os-offer-title">Der OSION-Handlungsplan</h3>
-                <p class="os-offer-text">Genau dafür wurde der <strong>OSION-Handlungsplan zur Ferienhausoptimierung</strong> entwickelt. Er soll dir zeigen, welche Hebel du in welcher Reihenfolge angehst, um Auslastung, Sichtbarkeit und Buchungswirkung gezielt zu verbessern.</p>
-                
-                <div class="os-roi-box">
-                    <p>💡 Schon eine zusätzliche Buchung kann den Handlungsplan mehrfach bezahlen.</p>
-                </div>
-
-                <div class="os-cta-group">
-                    <a href="#angebot" class="os-btn os-btn-primary">Handlungsplan ansehen →</a>
-                    <button class="os-btn os-btn-secondary" onclick="osionFunnel.restart()">↻ Erneut prüfen</button>
+    <div class="funnel-container">
+        <div class="funnel-bg"></div>
+        
+        <div class="funnel-content">
+            <!-- Header -->
+            <div class="funnel-header">
+                <div class="funnel-logo">OSION</div>
+                <div class="funnel-progress" id="progress-header">
+                    <span class="progress-text"><span id="current-q">1</span>/8</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 12.5%"></div>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Screens -->
+            <div class="screen-container" id="screen-container">
+                <!-- Screens will be generated by JS -->
+            </div>
+            
         </div>
     </div>
 
     <script>
-        (function() {
-            const questions = [
-                {
-                    id: 1,
-                    text: "Wie ist die aktuelle Auslastung deines Ferienhauses?",
-                    options: [
-                        { value: "A", text: "Unter 30 %", scores: { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 1 } },
-                        { value: "B", text: "30–50 %", scores: { auslastung: 2, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "C", text: "50–70 %", scores: { auslastung: 1, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "D", text: "Über 70 %", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Ich weiß es nicht genau", scores: { auslastung: 2, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 2 } }
-                    ]
-                },
-                {
-                    id: 2,
-                    text: "Was ist aus deiner Sicht aktuell das größte Problem?",
-                    options: [
-                        { value: "A", text: "Zu wenig Buchungen", scores: { auslastung: 2, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 1 } },
-                        { value: "B", text: "Zu wenig Anfragen", scores: { auslastung: 1, sichtbarkeit: 3, angebot: 1, preis: 0, strategie: 1 } },
-                        { value: "C", text: "Zu niedrige Preise", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 1 } },
-                        { value: "D", text: "Zu viele Lücken im Kalender", scores: { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 1, strategie: 1 } },
-                        { value: "E", text: "Ich weiß nicht genau, woran es liegt", scores: { auslastung: 1, sichtbarkeit: 1, angebot: 1, preis: 1, strategie: 3 } }
-                    ]
-                },
-                {
-                    id: 3,
-                    text: "Über welche Kanäle kommen aktuell deine Buchungen?",
-                    options: [
-                        { value: "A", text: "Hauptsächlich Airbnb", scores: { auslastung: 0, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 } },
-                        { value: "B", text: "Hauptsächlich Booking.com", scores: { auslastung: 0, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 } },
-                        { value: "C", text: "Airbnb und Booking.com", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "D", text: "Eigene Webseite oder Direktbuchungen", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Verschiedene Kanäle, aber ohne echte Strategie", scores: { auslastung: 1, sichtbarkeit: 2, angebot: 1, preis: 0, strategie: 3 } }
-                    ]
-                },
-                {
-                    id: 4,
-                    text: "Wie gut wird dein Ferienhaus deiner Meinung nach online gefunden?",
-                    options: [
-                        { value: "A", text: "Sehr schlecht", scores: { auslastung: 1, sichtbarkeit: 3, angebot: 0, preis: 0, strategie: 1 } },
-                        { value: "B", text: "Mittelmäßig", scores: { auslastung: 0, sichtbarkeit: 2, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "C", text: "Ganz gut", scores: { auslastung: 0, sichtbarkeit: 1, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "D", text: "Sehr gut", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Kann ich nicht einschätzen", scores: { auslastung: 0, sichtbarkeit: 2, angebot: 0, preis: 0, strategie: 2 } }
-                    ]
-                },
-                {
-                    id: 5,
-                    text: "Wie stark wirkt dein Inserat im Vergleich zu anderen Ferienhäusern?",
-                    options: [
-                        { value: "A", text: "Eher schwach", scores: { auslastung: 1, sichtbarkeit: 1, angebot: 3, preis: 0, strategie: 1 } },
-                        { value: "B", text: "Durchschnittlich", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 2, preis: 0, strategie: 0 } },
-                        { value: "C", text: "Ganz gut", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 1, preis: 0, strategie: 0 } },
-                        { value: "D", text: "Sehr professionell", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Ich habe keinen Vergleich", scores: { auslastung: 0, sichtbarkeit: 1, angebot: 2, preis: 0, strategie: 2 } }
-                    ]
-                },
-                {
-                    id: 6,
-                    text: "Wie sicher bist du dir bei deiner Preisstrategie?",
-                    options: [
-                        { value: "A", text: "Sehr unsicher", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 1 } },
-                        { value: "B", text: "Ich orientiere mich grob an anderen", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 2, strategie: 0 } },
-                        { value: "C", text: "Ich passe Preise gelegentlich an", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 1, strategie: 0 } },
-                        { value: "D", text: "Ich arbeite mit einer durchdachten Preisstrategie", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Ich weiß nicht, ob mein Preis richtig ist", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 2, strategie: 2 } }
-                    ]
-                },
-                {
-                    id: 7,
-                    text: "Was wäre für dich das wichtigste Ziel?",
-                    options: [
-                        { value: "A", text: "Mehr Buchungen", scores: { auslastung: 2, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 } },
-                        { value: "B", text: "Höhere Auslastung", scores: { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "C", text: "Bessere Preise", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 0 } },
-                        { value: "D", text: "Weniger Leerstand", scores: { auslastung: 2, sichtbarkeit: 1, angebot: 0, preis: 1, strategie: 0 } },
-                        { value: "E", text: "Eine bessere Gesamtstrategie", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 3 } }
-                    ]
-                },
-                {
-                    id: 8,
-                    text: "Wie dringend möchtest du die Buchungssituation verbessern?",
-                    options: [
-                        { value: "A", text: "Sofort", scores: { auslastung: 1, sichtbarkeit: 1, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "B", text: "Innerhalb der nächsten Wochen", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "C", text: "In den nächsten 1–3 Monaten", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "D", text: "Langfristig", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 } },
-                        { value: "E", text: "Ich möchte erstmal verstehen, was möglich ist", scores: { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 2 } }
-                    ]
-                }
-            ];
+        const questions = [
+            {
+                id: 1,
+                text: "Wie ist die aktuelle Auslastung deines Ferienhauses?",
+                options: ["Unter 30 %", "30–50 %", "50–70 %", "Über 70 %", "Ich weiß es nicht"],
+                scores: [
+                    { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 1 },
+                    { auslastung: 2, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 1, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 2, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 2 }
+                ]
+            },
+            {
+                id: 2,
+                text: "Was ist aktuell das größte Problem?",
+                options: ["Zu wenig Buchungen", "Zu wenig Anfragen", "Zu niedrige Preise", "Zu viele Lücken", "Ich weiß nicht"],
+                scores: [
+                    { auslastung: 2, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 1 },
+                    { auslastung: 1, sichtbarkeit: 3, angebot: 1, preis: 0, strategie: 1 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 1 },
+                    { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 1, strategie: 1 },
+                    { auslastung: 1, sichtbarkeit: 1, angebot: 1, preis: 1, strategie: 3 }
+                ]
+            },
+            {
+                id: 3,
+                text: "Über welche Kanäle kommen deine Buchungen?",
+                options: ["Nur Airbnb", "Nur Booking.com", "Beide Plattformen", "Direktbuchungen", "Ohne Strategie"],
+                scores: [
+                    { auslastung: 0, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 1, sichtbarkeit: 2, angebot: 1, preis: 0, strategie: 3 }
+                ]
+            },
+            {
+                id: 4,
+                text: "Wie gut wird dein Ferienhaus online gefunden?",
+                options: ["Sehr schlecht", "Mittelmäßig", "Ganz gut", "Sehr gut", "Unsicher"],
+                scores: [
+                    { auslastung: 1, sichtbarkeit: 3, angebot: 0, preis: 0, strategie: 1 },
+                    { auslastung: 0, sichtbarkeit: 2, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 1, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 2, angebot: 0, preis: 0, strategie: 2 }
+                ]
+            },
+            {
+                id: 5,
+                text: "Wie stark wirkt dein Inserat im Vergleich?",
+                options: ["Eher schwach", "Durchschnitt", "Ganz gut", "Sehr professionell", "Kein Vergleich"],
+                scores: [
+                    { auslastung: 1, sichtbarkeit: 1, angebot: 3, preis: 0, strategie: 1 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 2, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 1, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 1, angebot: 2, preis: 0, strategie: 2 }
+                ]
+            },
+            {
+                id: 6,
+                text: "Wie sicher bist du bei der Preisstrategie?",
+                options: ["Sehr unsicher", "Orientiere mich an anderen", "Passe gelegentlich an", "Durchdachte Strategie", "Weiß nicht"],
+                scores: [
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 1 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 2, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 1, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 2, strategie: 2 }
+                ]
+            },
+            {
+                id: 7,
+                text: "Was ist dir das wichtigste Ziel?",
+                options: ["Mehr Buchungen", "Höhere Auslastung", "Bessere Preise", "Weniger Leerstand", "Gesamtstrategie"],
+                scores: [
+                    { auslastung: 2, sichtbarkeit: 1, angebot: 1, preis: 0, strategie: 0 },
+                    { auslastung: 3, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 3, strategie: 0 },
+                    { auslastung: 2, sichtbarkeit: 1, angebot: 0, preis: 1, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 3 }
+                ]
+            },
+            {
+                id: 8,
+                text: "Wie dringend möchtest du verbessern?",
+                options: ["Sofort", "Nächste Wochen", "1–3 Monate", "Langfristig", "Erst verstehen"],
+                scores: [
+                    { auslastung: 1, sichtbarkeit: 1, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 },
+                    { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 2 }
+                ]
+            }
+        ];
 
-            const diagnoses = {
-                auslastung: {
-                    title: "Auslastungsproblem",
-                    text: "Der größte Engpass liegt wahrscheinlich in der Auslastung. Dein Ferienhaus schöpft sein vorhandenes Potenzial nicht konstant genug aus. Entscheidend ist jetzt nicht nur mehr Sichtbarkeit, sondern ein strukturierter Plan, der Kalenderlücken, Buchungsphasen und Angebotswirkung zusammen betrachtet."
-                },
-                sichtbarkeit: {
-                    title: "Sichtbarkeitsproblem",
-                    text: "Der größte Engpass liegt wahrscheinlich in der Sichtbarkeit. Dein Ferienhaus kann nur gebucht werden, wenn es von passenden Gästen überhaupt gefunden und als relevante Option wahrgenommen wird. Hier entscheidet nicht ein einzelner Plattform-Eintrag, sondern die gesamte Auffindbarkeit und Positionierung."
-                },
-                angebot: {
-                    title: "Angebotsproblem",
-                    text: "Der größte Engpass liegt wahrscheinlich in der Wirkung deines Angebots. Dein Ferienhaus kann gut sein und trotzdem zu wenig Buchungen erzielen, wenn Bilder, Texte, Ausstattung, Nutzenargumente oder Vertrauen nicht stark genug wirken."
-                },
-                preis: {
-                    title: "Preisstrategieproblem",
-                    text: "Der größte Engpass liegt wahrscheinlich in der Preisstrategie. Wenn Preise nicht zur Nachfrage, Saison, Zielgruppe und Angebotswirkung passen, entstehen entweder Leerstand oder verschenktes Umsatzpotenzial."
-                },
-                strategie: {
-                    title: "Strategieproblem",
-                    text: "Der größte Engpass liegt wahrscheinlich in der fehlenden Gesamtstrategie. Einzelne Verbesserungen können helfen, aber ohne strukturierten Handlungsplan bleibt oft unklar, welche Maßnahme zuerst den größten Effekt bringt."
-                }
-            };
+        const diagnoses = {
+            auslastung: {
+                title: "Auslastungsproblem",
+                text: "Dein Ferienhaus schöpft sein Potenzial nicht konstant aus. Entscheidend ist jetzt ein strukturierter Plan, der Kalenderlücken, Buchungsphasen und Angebotswirkung zusammen betrachtet."
+            },
+            sichtbarkeit: {
+                title: "Sichtbarkeitsproblem",
+                text: "Dein Ferienhaus muss erst von passenden Gästen gefunden werden. Hier entscheidet nicht ein einzelner Plattform-Eintrag, sondern die gesamte Auffindbarkeit und Positionierung."
+            },
+            angebot: {
+                title: "Angebotsproblem",
+                text: "Dein Ferienhaus kann gut sein und trotzdem zu wenig Buchungen erzielen, wenn Bilder, Texte und Vertrauen nicht stark genug wirken."
+            },
+            preis: {
+                title: "Preisstrategieproblem",
+                text: "Wenn Preise nicht zur Nachfrage, Saison und Zielgruppe passen, entstehen entweder Leerstand oder verschenktes Umsatzpotenzial."
+            },
+            strategie: {
+                title: "Strategieproblem",
+                text: "Ohne strukturierten Handlungsplan bleibt oft unklar, welche Maßnahme zuerst den größten Effekt bringt."
+            }
+        };
 
-            let currentQuestion = 0;
-            let answers = [];
-            let scores = { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 };
-            let selectedOption = null;
+        let currentScreen = 0;
+        let answers = [];
+        let scores = { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 };
 
-            function renderQuestion() {
-                const question = questions[currentQuestion];
-                const container = document.getElementById('os-question-container');
+        function init() {
+            const container = document.getElementById('screen-container');
+            
+            // Create question screens
+            questions.forEach((q, idx) => {
+                const screen = document.createElement('div');
+                screen.className = 'screen' + (idx === 0 ? ' active' : '');
+                screen.id = `screen-${idx}`;
                 
-                document.getElementById('os-current-step').textContent = currentQuestion + 1;
-                document.getElementById('os-progress-fill').style.width = ((currentQuestion + 1) / 8 * 100) + '%';
-                
-                const optionsHtml = question.options.map((opt, idx) => `
-                    <label class="os-option">
-                        <input type="radio" name="q${question.id}" value="${idx}" onchange="osionFunnel.selectOption(${idx})">
-                        <div class="os-option-label">
-                            <div class="os-option-radio"></div>
-                            <span>${opt.text}</span>
-                        </div>
-                    </label>
+                const optionsHtml = q.options.map((opt, optIdx) => `
+                    <button class="option-btn" onclick="selectOption(${idx}, ${optIdx}, this)">
+                        <div class="option-radio"></div>
+                        <span>${opt}</span>
+                    </button>
                 `).join('');
                 
-                container.innerHTML = `
-                    <div class="os-question-card">
-                        <div class="os-question-badge">Frage ${currentQuestion + 1} von 8</div>
-                        <h2 class="os-question-title">${question.text}</h2>
-                        <div class="os-options">
-                            ${optionsHtml}
-                        </div>
-                        <div class="os-nav">
-                            <button class="os-btn os-btn-secondary" onclick="osionFunnel.prevQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>← Zurück</button>
-                            <button class="os-btn os-btn-primary" id="os-next-btn" onclick="osionFunnel.nextQuestion()" disabled>Weiter →</button>
-                        </div>
+                screen.innerHTML = `
+                    <div class="question-badge">Frage ${idx + 1}</div>
+                    <h2 class="question-title">${q.text}</h2>
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                    <div class="nav-bar">
+                        <button class="nav-btn nav-btn-secondary" onclick="prevScreen()" ${idx === 0 ? 'style="visibility:hidden"' : ''}>← Zurück</button>
+                        <button class="nav-btn nav-btn-primary" id="next-${idx}" onclick="nextScreen()" disabled>Weiter →</button>
                     </div>
                 `;
                 
-                selectedOption = null;
+                container.appendChild(screen);
+            });
+            
+            // Create results screen
+            const resultsScreen = document.createElement('div');
+            resultsScreen.className = 'screen';
+            resultsScreen.id = 'screen-results';
+            resultsScreen.innerHTML = `
+                <div class="results-scroll">
+                    <div class="results-header">
+                        <div class="results-icon">📊</div>
+                        <div class="results-title">Deine Ergebnisse</div>
+                        <div class="results-subtitle">Basierend auf deinen Antworten</div>
+                    </div>
+                    
+                    <div class="diagnosis-card">
+                        <div class="diagnosis-label">Hauptdiagnose</div>
+                        <div class="diagnosis-title" id="diag-title"></div>
+                        <div class="diagnosis-text" id="diag-text"></div>
+                    </div>
+                    
+                    <div class="consequence-box">
+                        <p>Ohne strukturierten Plan werden einzelne Änderungen ausprobiert, ohne die Ursache zu bearbeiten.</p>
+                    </div>
+                    
+                    <div class="cta-box">
+                        <div class="cta-title">OSION-Handlungsplan</div>
+                        <div class="cta-text">Zeigt dir, welche Hebel du in welcher Reihenfolge angebst.</div>
+                        <div class="roi-badge">
+                            <p>💡 Eine zusätzliche Buchung bezahlt den Plan mehrfach</p>
+                        </div>
+                        <a href="#angebot" class="cta-btn">Handlungsplan ansehen →</a>
+                    </div>
+                </div>
                 
-                if (answers[currentQuestion] !== undefined) {
-                    const inputs = container.querySelectorAll('input[type="radio"]');
-                    if (inputs[answers[currentQuestion]]) {
-                        inputs[answers[currentQuestion]].checked = true;
-                        selectedOption = answers[currentQuestion];
-                        document.getElementById('os-next-btn').disabled = false;
-                    }
+                <div class="nav-bar" style="padding-top:12px">
+                    <button class="nav-btn nav-btn-secondary" onclick="restart()">↻ Neu starten</button>
+                </div>
+            `;
+            container.appendChild(resultsScreen);
+        }
+
+        function selectOption(screenIdx, optIdx, btn) {
+            // Remove selected from all options in this screen
+            const screen = document.getElementById(`screen-${screenIdx}`);
+            screen.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            
+            // Enable next button
+            document.getElementById(`next-${screenIdx}`).disabled = false;
+            
+            // Store answer
+            answers[screenIdx] = optIdx;
+            
+            // Add scores
+            const q = questions[screenIdx];
+            const score = q.scores[optIdx];
+            Object.keys(score).forEach(k => {
+                // Reset previous scores for this question if any
+                if (answers[screenIdx] !== undefined) {
+                    // We'll handle this in nextScreen/prevScreen
                 }
-            }
+            });
+        }
 
-            function selectOption(idx) {
-                selectedOption = idx;
-                document.getElementById('os-next-btn').disabled = false;
-            }
+        function updateProgress() {
+            const pct = ((currentScreen + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('current-q').textContent = Math.min(currentScreen + 1, 8);
+        }
 
-            function nextQuestion() {
-                if (selectedOption === null) return;
+        function nextScreen() {
+            if (currentScreen < questions.length - 1) {
+                // Add scores
+                const q = questions[currentScreen];
+                const score = q.scores[answers[currentScreen]];
+                Object.keys(score).forEach(k => scores[k] += score[k]);
                 
-                answers[currentQuestion] = selectedOption;
-                const question = questions[currentQuestion];
-                const option = question.options[selectedOption];
+                // Animate
+                document.getElementById(`screen-${currentScreen}`).classList.add('prev');
+                document.getElementById(`screen-${currentScreen}`).classList.remove('active');
                 
-                Object.keys(option.scores).forEach(key => {
-                    scores[key] += option.scores[key];
-                });
+                currentScreen++;
+                document.getElementById(`screen-${currentScreen}`).classList.add('active');
+                updateProgress();
+            } else {
+                // Add last scores
+                const q = questions[currentScreen];
+                const score = q.scores[answers[currentScreen]];
+                Object.keys(score).forEach(k => scores[k] += score[k]);
                 
-                if (currentQuestion < questions.length - 1) {
-                    currentQuestion++;
-                    renderQuestion();
-                } else {
-                    showResults();
+                // Show results
+                document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+                document.getElementById('screen-results').classList.add('active');
+                document.getElementById('progress-header').style.opacity = '0';
+                
+                // Set diagnosis
+                const maxCat = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+                document.getElementById('diag-title').textContent = diagnoses[maxCat].title;
+                document.getElementById('diag-text').textContent = diagnoses[maxCat].text;
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreen > 0) {
+                // Remove scores
+                const q = questions[currentScreen];
+                if (answers[currentScreen] !== undefined) {
+                    const score = q.scores[answers[currentScreen]];
+                    Object.keys(score).forEach(k => scores[k] -= score[k]);
                 }
-            }
-
-            function prevQuestion() {
-                if (currentQuestion > 0) {
-                    if (answers[currentQuestion] !== undefined) {
-                        const question = questions[currentQuestion];
-                        const option = question.options[answers[currentQuestion]];
-                        Object.keys(option.scores).forEach(key => {
-                            scores[key] -= option.scores[key];
-                        });
-                        answers[currentQuestion] = undefined;
-                    }
-                    currentQuestion--;
-                    renderQuestion();
-                }
-            }
-
-            function showResults() {
-                document.getElementById('os-intro').classList.add('os-hidden');
-                document.getElementById('os-progress').classList.add('os-hidden');
-                document.getElementById('os-question-container').classList.add('os-hidden');
-                document.getElementById('os-results').classList.remove('os-hidden');
                 
-                const maxCategory = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-                const diagnosis = diagnoses[maxCategory];
-                
-                document.getElementById('os-diagnosis-title').textContent = diagnosis.title;
-                document.getElementById('os-diagnosis-text').textContent = diagnosis.text;
+                document.getElementById(`screen-${currentScreen}`).classList.remove('active');
+                currentScreen--;
+                document.getElementById(`screen-${currentScreen}`).classList.add('active');
+                document.getElementById(`screen-${currentScreen}`).classList.remove('prev');
+                updateProgress();
             }
+        }
 
-            function restart() {
-                currentQuestion = 0;
-                answers = [];
-                scores = { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 };
-                selectedOption = null;
-                
-                document.getElementById('os-intro').classList.remove('os-hidden');
-                document.getElementById('os-progress').classList.remove('os-hidden');
-                document.getElementById('os-question-container').classList.remove('os-hidden');
-                document.getElementById('os-results').classList.add('os-hidden');
-                
-                renderQuestion();
-            }
+        function restart() {
+            currentScreen = 0;
+            answers = [];
+            scores = { auslastung: 0, sichtbarkeit: 0, angebot: 0, preis: 0, strategie: 0 };
+            
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active', 'prev');
+            });
+            document.getElementById('screen-0').classList.add('active');
+            document.getElementById('progress-header').style.opacity = '1';
+            
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.nav-btn-primary').forEach(b => b.disabled = true);
+            
+            updateProgress();
+        }
 
-            window.osionFunnel = {
-                selectOption,
-                nextQuestion,
-                prevQuestion,
-                restart
-            };
-
-            renderQuestion();
-        })();
+        // Initialize
+        init();
+        updateProgress();
     </script>
 </body>
 </html>
